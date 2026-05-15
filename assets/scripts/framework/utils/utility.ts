@@ -1,4 +1,5 @@
 import { Logger } from "../logger/logger";
+import { Node, Vec2, Vec3, Size, Animation, director, view, UITransform } from 'cc';
 
 const log = new Logger("utility");
 
@@ -18,28 +19,35 @@ export class Utility {
     }
 
     // 设置背景大小，适配不同分辨率
-    static adaptUI(bg: cc.Node) {
+    static adaptUI(bg: Node) {
         // 调整分辨率
-        let nodeSize = bg.getContentSize();
+        let uiTransform = bg.getComponent(UITransform);
+        if (!uiTransform) {
+            log.warn("adaptUI: node does not have UITransform component");
+            return;
+        }
+        let nodeSize = uiTransform.contentSize;
         let _rateR = nodeSize.height / nodeSize.width;
-        let _rateV = cc.winSize.height / cc.winSize.width;
+        let winSize = view.getVisibleSize();
+        let _rateV = winSize.height / winSize.width;
 
         if (_rateV > _rateR) {
             // 适配宽度
-            bg.width = cc.winSize.width;
-            bg.height = cc.winSize.height * (cc.winSize.width / nodeSize.width);
+            uiTransform.setContentSize(winSize.width, winSize.width * (nodeSize.height / nodeSize.width));
         }
         else {
             // 适配高度
-            bg.height = cc.winSize.height;
-            bg.width = cc.winSize.width * (cc.winSize.height / nodeSize.height);
+            uiTransform.setContentSize(winSize.height * (nodeSize.width / nodeSize.height), winSize.height);
         }
     }
 
     // 递归查找子节点
-    static deepFind(nodeName: string, referenceNode?: cc.Node): cc.Node {
+    static deepFind(nodeName: string, referenceNode?: Node): Node {
         if (referenceNode == null) {
-            referenceNode = cc.director.getScene();
+            referenceNode = director.getScene();
+        }
+        if (!referenceNode) {
+            return null;
         }
         if (referenceNode.name === nodeName) {
             return referenceNode;
@@ -95,7 +103,7 @@ export class Utility {
         }
     }
 
-    //格式化数值，显示k(千)、m(百万)、b(十亿)、t(万亿)
+    //格式化数值，显示 k(千)、m(百万)、b(十亿)、t(万亿)
     static formatNumber(num: number, numberInitial?: string[]): string {
         let postfix = numberInitial || ["T", "B", "M", "K"];
         let trillion = 1e12;
@@ -119,7 +127,7 @@ export class Utility {
         }
     }
 
-    // timeInitial是一个长度为4的字符串数组，表示日、时、分、秒，如[d, h, m, s]
+    // timeInitial 是一个长度为 4 的字符串数组，表示日、时、分、秒，如 [d, h, m, s]
     static formatTimeWithInitial(seconds: number, timeInitial?: string[]): string {
         let postfix = timeInitial || ['Day', 'Hour', 'Min', 'Sec'];
 
@@ -152,7 +160,7 @@ export class Utility {
         return leftTimes.join(' ');
     };
 
-    // 如果时间小于一天会显示为00:00:00的样子，如果大于1天会显示为1Day1Hour
+    // 如果时间小于一天会显示为 00:00:00 的样子，如果大于 1 天会显示为 1Day1Hour
     static formatTimeAsRemainTime(seconds: number) {
         const days = Math.floor(seconds / 86400);
         if (days > 0) {
@@ -164,7 +172,7 @@ export class Utility {
             return this.formatTimeWithColon(seconds, 2);
     }
 
-    // 将时间转换为00:00或00:00:00的字符串
+    // 将时间转换为 00:00 或 00:00:00 的字符串
     static formatTimeWithColon(seconds: number, colonNum: 1 | 2): string {
         let days = Math.floor(seconds / 86400);
         seconds = seconds % 86400;
@@ -180,7 +188,7 @@ export class Utility {
         }
     }
 
-    //将秒数格式化为“多久以前”，如：“1分钟以前”，“5天前”
+    //将秒数格式化为"多久以前"，如："1 分钟以前"，"5 天前"
     static formmatTimePast(seconds: number): string {
         //TODO: implemente it
         return seconds.toString();
@@ -208,75 +216,91 @@ export class Utility {
     }
 
     //判断一个点是否在一个盒子内
-    static pointInBox(pointPos: cc.Vec2, boxMiddle: cc.Vec2, boxSize: cc.Size) {
-        const offset = pointPos.sub(boxMiddle);
+    static pointInBox(pointPos: Vec2, boxMiddle: Vec2, boxSize: Size) {
+        const offset = pointPos.subtract(boxMiddle);
         return Math.abs(offset.x) < boxSize.width / 2 && Math.abs(offset.y) < boxSize.height / 2;
     }
 
     //判断一个点是否在一个圆内
-    static pointInCircle(pointPos: cc.Vec2, circleCenter: cc.Vec2, circleRadius: number) {
-        const offset = pointPos.sub(circleCenter);
-        return offset.mag() < circleRadius;
+    static pointInCircle(pointPos: Vec2, circleCenter: Vec2, circleRadius: number) {
+        const offset = pointPos.subtract(circleCenter);
+        return offset.length() < circleRadius;
     }
 
-    static sampleAnim(anim: cc.Animation, animName: string, time: number) {
-        anim.play(animName);
-        anim.stop();
-        anim.setCurrentTime(time, animName);
-        anim.sample(animName);
+    static sampleAnim(anim: Animation, animName: string, time: number) {
+        const state = anim.getState(animName);
+        if (state) {
+            state.time = time;
+            state.sample();
+        }
     }
 
-    static getWorldPositionOfNode(node: cc.Node) {
-        if (node.getParent())
-            return node.getParent().convertToWorldSpaceAR(node.position);
-        else
-            return node.position;
+    static getWorldPositionOfNode(node: Node): Vec3 {
+        const worldPos = new Vec3();
+        node.getWorldPosition(worldPos);
+        return worldPos;
     }
 
-    //这里的设置anchor是类似Unity只有节点原点会移动，而不是cocos那种只有框和锚点在动
-    static setAnchorPointInPointsAR(node: cc.Node, point: cc.Vec2) {
-        const ap = node.getAnchorPoint();
-        const arPoint = cc.v2(node.width * ap.x, node.height * ap.y);
+    //这里的设置 anchor 是类似 Unity 只有节点原点会移动，而不是 cocos 那种只有框和锚点在动
+    static setAnchorPointInPointsAR(node: Node, point: Vec2) {
+        const uiTransform = node.getComponent(UITransform);
+        if (!uiTransform) {
+            log.warn("setAnchorPointInPointsAR: node does not have UITransform component");
+            return;
+        }
+        const ap = uiTransform.anchorPoint;
+        const arPoint = new Vec2(uiTransform.width * ap.x, uiTransform.height * ap.y);
         const pointWithoutAR = arPoint.add(point);
         Utility.setAnchorPointInPoints(node, pointWithoutAR);
     }
 
-    //这里的设置anchor是类似Unity只有节点原点会移动，而不是cocos那种只有框和锚点在动
-    static setAnchorPointInPoints(node: cc.Node, point: cc.Vec2) {
+    //这里的设置 anchor 是类似 Unity 只有节点原点会移动，而不是 cocos 那种只有框和锚点在动
+    static setAnchorPointInPoints(node: Node, point: Vec2) {
         let aX, aY = 0;
-        if (point.x <= 0 || node.width === 0) aX = 0;
-        else if (point.x >= node.width) aX = 1;
-        else aX = point.x / node.width;
+        const uiTransform = node.getComponent(UITransform);
+        if (!uiTransform) {
+            log.warn("setAnchorPointInPoints: node does not have UITransform component");
+            return;
+        }
+        if (point.x <= 0 || uiTransform.width === 0) aX = 0;
+        else if (point.x >= uiTransform.width) aX = 1;
+        else aX = point.x / uiTransform.width;
 
-        if (point.y <= 0 || node.height === 0) aY = 0;
-        else if (point.y >= node.height) aY = 1;
-        else aY = point.y / node.height;
+        if (point.y <= 0 || uiTransform.height === 0) aY = 0;
+        else if (point.y >= uiTransform.height) aY = 1;
+        else aY = point.y / uiTransform.height;
 
         Utility.setAnchorPoint(node, aX, aY);
     }
 
-    //这里的设置anchor是类似Unity只有节点原点会移动
-    static setAnchorPoint(node: cc.Node, aX: number, aY: number) {
+    //这里的设置 anchor 是类似 Unity 只有节点原点会移动
+    static setAnchorPoint(node: Node, aX: number, aY: number) {
         if (aX < 0) aX = 0;
         else if (aX > 1) aX = 1;
 
         if (aY < 0) aY = 0;
         else if (aY > 1) aY = 1;
 
-        const childOffset = cc.v2(node.width * node.anchorX - node.width * aX, node.height * node.anchorY - node.height * aY);
+        const uiTransform = node.getComponent(UITransform);
+        if (!uiTransform) {
+            log.warn("setAnchorPoint: node does not have UITransform component");
+            return;
+        }
+
+        const childOffset = new Vec3(uiTransform.width * uiTransform.anchorPoint.x - uiTransform.width * aX, uiTransform.height * uiTransform.anchorPoint.y - uiTransform.height * aY, 0);
         const children = node.children;
         children.forEach(value => {
             value.position = value.position.add(childOffset);
         });
-        const nodeOffset = cc.v2(-childOffset.x * node.scaleX, -childOffset.y * node.scaleY);
+        const nodeOffset = new Vec3(-childOffset.x * node.scale.x, -childOffset.y * node.scale.y, 0);
         node.position = node.position.add(nodeOffset);
     }
 
-    //获得半径为1的单位圆中的任意一点
+    //获得半径为 1 的单位圆中的任意一点
     static getRandomInsideUnitSphere() {
         const angel = Utility.randomFloat(0, 360) / 180 * Math.PI;
         const r = Math.random();
-        return cc.v2(Math.cos(angel) * r, Math.sin(angel) * r);
+        return new Vec2(Math.cos(angel) * r, Math.sin(angel) * r);
     }
 
     //返回带有商和余数的对象
@@ -287,7 +311,7 @@ export class Utility {
         }
     }
 
-    //将HtmlImageElement转为Base64编码
+    //将 HtmlImageElement 转为 Base64 编码
     static imageToBase64(img: HTMLImageElement, mimeType?: string) {
         // New Canvas
         var canvas = document.createElement("canvas");

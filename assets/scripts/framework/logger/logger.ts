@@ -3,9 +3,11 @@
 // const log = new Logger("logName");
 // log.info("xxx");
 //
-// 需要在localstorage里设置LogNss和LogLvl才会有日志输出：
-// LogNss用于配置哪些日志需要输出，*表示全部输出，logName表示只输出名字为"logName"的日志实例的输出；
-// LogLvl用于配置输出输出等级，默认从silly等级开始输出，即全部输出。
+// 需要在 localstorage 里设置 LogNss 和 LogLvl 才会有日志输出：
+// LogNss 用于配置哪些日志需要输出，*表示全部输出，logName 表示只输出名字为"logName"的日志实例的输出；
+// LogLvl 用于配置输出输出等级，默认从 silly 等级开始输出，即全部输出。
+
+import { sys } from 'cc';
 
 // 日志输出等级
 export enum LogLevel {
@@ -20,15 +22,15 @@ export enum LogLevel {
 // 日志设置实例
 class LoggerSetting {
     constructor() {
-        let namespaces: string = cc.sys.localStorage.getItem("LogNss");
+        let namespaces: string = sys.localStorage.getItem("LogNss");
         if (namespaces == null) {
             namespaces = "*";
-            cc.sys.localStorage.setItem("LogNss", namespaces);
+            sys.localStorage.setItem("LogNss", namespaces);
         }
-        let strLogLevel: string = cc.sys.localStorage.getItem("LogLvl");
+        let strLogLevel: string = sys.localStorage.getItem("LogLvl");
         if (strLogLevel == null) {
             strLogLevel = "silly"
-            cc.sys.localStorage.setItem("LogLvl", strLogLevel);
+            sys.localStorage.setItem("LogLvl", strLogLevel);
         }
         this.logLevel = LogLevel[strLogLevel || "silly"];
         this.parse(namespaces);
