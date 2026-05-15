@@ -1,0 +1,63 @@
+{
+  "ver": "1.0.8",
+  "importer": "sprite-atlas",
+  "imported": true,
+  "uuid": "40ac11d7-2383-486e-8d28-86c7a2ce8cfe",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {
+    "a22ab": {
+      "importer": "sprite-frame",
+      "uuid": "40ac11d7-2383-486e-8d28-86c7a2ce8cfe@a22ab",
+      "displayName": "",
+      "id": "a22ab",
+      "name": "Path",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": -76,
+        "trimX": 0,
+        "trimY": 0,
+        "width": 960,
+        "height": 488,
+        "rawWidth": 960,
+        "rawHeight": 640,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "29ea6144-31e1-4336-9768-a39a0d2b27d3@6c48a",
+        "atlasUuid": "40ac11d7-2383-486e-8d28-86c7a2ce8cfe",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "atlasTextureName": "BG-hd.png",
+    "format": 2,
+    "uuid": "40ac11d7-2383-486e-8d28-86c7a2ce8cfe",
+    "textureUuid": "29ea6144-31e1-4336-9768-a39a0d2b27d3@6c48a"
+  }
+}

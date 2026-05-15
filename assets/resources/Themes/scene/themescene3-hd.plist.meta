@@ -1,0 +1,63 @@
+{
+  "ver": "1.0.8",
+  "importer": "sprite-atlas",
+  "imported": true,
+  "uuid": "b12d9925-e197-4d52-b477-e99a6d94a1a3",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {
+    "c016f": {
+      "importer": "sprite-frame",
+      "uuid": "b12d9925-e197-4d52-b477-e99a6d94a1a3@c016f",
+      "displayName": "",
+      "id": "c016f",
+      "name": "theme_bg",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 2,
+        "trimY": 2,
+        "width": 960,
+        "height": 640,
+        "rawWidth": 960,
+        "rawHeight": 640,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "c2ab6ecd-daa3-4b82-9030-a94083bb59f7@6c48a",
+        "atlasUuid": "b12d9925-e197-4d52-b477-e99a6d94a1a3",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "atlasTextureName": "themescene3-hd.png",
+    "format": 2,
+    "uuid": "b12d9925-e197-4d52-b477-e99a6d94a1a3",
+    "textureUuid": "c2ab6ecd-daa3-4b82-9030-a94083bb59f7@6c48a"
+  }
+}

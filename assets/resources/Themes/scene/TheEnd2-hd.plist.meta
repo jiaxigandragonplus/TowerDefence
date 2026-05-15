@@ -1,0 +1,293 @@
+{
+  "ver": "1.0.8",
+  "importer": "sprite-atlas",
+  "imported": true,
+  "uuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {
+    "49939": {
+      "importer": "sprite-frame",
+      "uuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15@49939",
+      "displayName": "",
+      "id": "49939",
+      "name": "theend_tov2_CN",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": true,
+        "offsetX": 0,
+        "offsetY": 151,
+        "trimX": 644,
+        "trimY": 2,
+        "width": 894,
+        "height": 252,
+        "rawWidth": 894,
+        "rawHeight": 640,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "2ecb04c4-a0fd-47a7-9910-2acfb2143f0c@6c48a",
+        "atlasUuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "7feb6": {
+      "importer": "sprite-frame",
+      "uuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15@7feb6",
+      "displayName": "",
+      "id": "7feb6",
+      "name": "theend_tov2_EN",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": true,
+        "offsetX": 0,
+        "offsetY": 153,
+        "trimX": 1148,
+        "trimY": 2,
+        "width": 894,
+        "height": 248,
+        "rawWidth": 894,
+        "rawHeight": 640,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "2ecb04c4-a0fd-47a7-9910-2acfb2143f0c@6c48a",
+        "atlasUuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "80ae1": {
+      "importer": "sprite-frame",
+      "uuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15@80ae1",
+      "displayName": "",
+      "id": "80ae1",
+      "name": "theend_tov2_TW",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": true,
+        "offsetX": 0,
+        "offsetY": 153,
+        "trimX": 898,
+        "trimY": 2,
+        "width": 894,
+        "height": 248,
+        "rawWidth": 894,
+        "rawHeight": 640,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "2ecb04c4-a0fd-47a7-9910-2acfb2143f0c@6c48a",
+        "atlasUuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "7f8a7": {
+      "importer": "sprite-frame",
+      "uuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15@7f8a7",
+      "displayName": "",
+      "id": "7f8a7",
+      "name": "theend_tov2_bg",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": true,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 2,
+        "trimY": 2,
+        "width": 960,
+        "height": 640,
+        "rawWidth": 960,
+        "rawHeight": 640,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "2ecb04c4-a0fd-47a7-9910-2acfb2143f0c@6c48a",
+        "atlasUuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "525e8": {
+      "importer": "sprite-frame",
+      "uuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15@525e8",
+      "displayName": "",
+      "id": "525e8",
+      "name": "theend_tov2_close_normal",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 1,
+        "offsetY": 3,
+        "trimX": 714,
+        "trimY": 898,
+        "width": 68,
+        "height": 68,
+        "rawWidth": 100,
+        "rawHeight": 80,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "2ecb04c4-a0fd-47a7-9910-2acfb2143f0c@6c48a",
+        "atlasUuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "3cb0d": {
+      "importer": "sprite-frame",
+      "uuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15@3cb0d",
+      "displayName": "",
+      "id": "3cb0d",
+      "name": "theend_tov2_close_pressed",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 1,
+        "offsetY": 3,
+        "trimX": 644,
+        "trimY": 898,
+        "width": 68,
+        "height": 68,
+        "rawWidth": 100,
+        "rawHeight": 80,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "2ecb04c4-a0fd-47a7-9910-2acfb2143f0c@6c48a",
+        "atlasUuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "atlasTextureName": "TheEnd2-hd.png",
+    "format": 2,
+    "uuid": "7c26a348-83b9-4372-84eb-65f2e36f7b15",
+    "textureUuid": "2ecb04c4-a0fd-47a7-9910-2acfb2143f0c@6c48a"
+  }
+}

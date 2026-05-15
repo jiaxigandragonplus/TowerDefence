@@ -1,4 +1,4 @@
-import { Logger } from "../logger/logger";
+import { Logger } from "../logger/Logger";
 import { Node, Vec2, Vec3, Size, Animation, director, view, UITransform } from 'cc';
 
 const log = new Logger("utility");
