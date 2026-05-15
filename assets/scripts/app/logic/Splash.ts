@@ -61,6 +61,6 @@ export class Splash extends UIBase {
     }
 
     getUrl(): string {
-        return "prefab/splash-ui";
+        return "prefab/splash_ui";
     }
 }

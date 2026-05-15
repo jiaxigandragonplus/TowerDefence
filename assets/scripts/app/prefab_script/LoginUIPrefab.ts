@@ -9,17 +9,5 @@ export class LoginUIPrefab extends Component {
     bg: Node = null;
 
     @property(Button)
-    wechatLoginBtn: Button = null;
-
-    @property(Button)
-    accountLoginBtn: Button = null;
-
-    @property(Button)
-    accountRegBtn: Button = null;
-
-    @property(Button)
-    customBtn: Button = null;
-
-    @property(Button)
-    guestLoginBtn: Button = null;
+    startBtn: Button = null;
 }

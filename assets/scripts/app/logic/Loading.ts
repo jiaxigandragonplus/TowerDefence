@@ -31,6 +31,6 @@ export class Loading extends UIBase {
     }
 
     getUrl(): string {
-        return "prefab/loading-ui";
+        return "prefab/loading_ui";
     }
 }
