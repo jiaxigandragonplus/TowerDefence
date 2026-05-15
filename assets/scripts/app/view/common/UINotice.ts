@@ -17,16 +17,16 @@ class UINoticeMgr {
             // 假设 globalCfg 已被移除或需要重新实现
             resolve();
         })
-        .then(() => {
-            self.noticeShowing = false;
-            self.noticeQueue = [];
-            self.isPause = false;
-            self.timerId = 0;
-            callback();
-        })
-        .catch((err: Error) => {
-            callback(err);
-        });
+            .then(() => {
+                self.noticeShowing = false;
+                self.noticeQueue = [];
+                self.isPause = false;
+                self.timerId = 0;
+                callback();
+            })
+            .catch((err: Error) => {
+                callback(err);
+            });
     }
 
     //显示小尺寸的提示信息，传入文本

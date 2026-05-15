@@ -7,7 +7,7 @@ const log = new Logger("ui-base-show-waiting");
 export abstract class UIBaseShowWaiting extends UIBase {
     async show(): Promise<void> {
         const self = this;
-        
+
         try {
             await uiWaiting.show();
             await self.superShow();

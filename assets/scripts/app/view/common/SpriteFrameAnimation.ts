@@ -83,7 +83,7 @@ export class SpriteFrameAnimation extends Component {
     public async loadSpriteSheet(plistPath: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             console.info(`加载精灵表单：${plistPath}`);
-            
+
             // 加载 plist 文件（SpriteFrame 类型）
             resources.load(plistPath, SpriteFrame, (err, spriteFrame: SpriteFrame) => {
                 if (err) {
@@ -231,7 +231,7 @@ export class SpriteFrameAnimation extends Component {
 
     private _nextFrame() {
         this._currentFrameIndex++;
-        
+
         if (this._currentFrameIndex >= this._currentFrames.length) {
             if (this._loop) {
                 this._currentFrameIndex = 0;
@@ -241,12 +241,12 @@ export class SpriteFrameAnimation extends Component {
                 this._currentFrameIndex = this._currentFrames.length - 1;
                 // 显示最后一帧
                 this._updateFrame(this._currentFrames[this._currentFrameIndex]);
-                
+
                 // 回调
                 if (this._onCompleteCallback) {
                     this._onCompleteCallback();
                 }
-                
+
                 // 播放完成后销毁节点
                 if (this._destroyOnComplete) {
                     this.node.destroy();
