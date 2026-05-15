@@ -4,7 +4,7 @@ import Win_CmnDlgBox from "./WinCmnDlgBox";
 import { Node, Label } from "cc";
 
 class UICmnDlgBoxMgr {
-    showCmnDlgBox(option: CmnDlgBoxOptions) {
+    async showCmnDlgBox(option: CmnDlgBoxOptions): Promise<void> {
         let prefab = this.defaultPrefab;
         if (option.prefab) {
             prefab = option.prefab;
@@ -17,7 +17,7 @@ class UICmnDlgBoxMgr {
         dlg.onHideCb = (dlg) => {
             dlgPool.put(dlg);
         };
-        dlg.showCmnDlgBox(option);
+        await dlg.showCmnDlgBox(option);
     }
 
     private readonly defaultPrefab: string = "defaultPrefab";
@@ -29,9 +29,9 @@ class UICmnDlgBox extends UIBaseShowWaiting {
         return false;
     }
 
-    showCmnDlgBox(option: CmnDlgBoxOptions) {
+    async showCmnDlgBox(option: CmnDlgBoxOptions): Promise<void> {
         this.option = option;
-        this.show();
+        await this.show();
     }
 
     onShow() {

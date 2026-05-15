@@ -42,12 +42,15 @@ export class Login extends UIBase {
     }
 
     // 账号登录
-    onAccountLoginClicked() {
+    async onAccountLoginClicked() {
         log.info("call onAccountLoginClicked.");
         const loginUI = new AccountLogin();
-        loginUI.show((error) => {
+        try {
+            await loginUI.show();
             log.info('show account login');
-        })
+        } catch (error) {
+            log.error(`show account login error: ${error}`);
+        }
     }
 
     // 账号注册

@@ -8,23 +8,26 @@ export abstract class DataLoader {
     protected abstract getResUrl(): string;
     // 资源 json 对象
     protected res: any;
-    // 加载数据表格
-    public load(callback: (err: Error) => void) {
-        resources.load(this.getResUrl(), JsonAsset, (err, jsonAsset) => {
-            if (err) {
-                callback(err);
-                return;
-            }
-            // Cocos Creator 3.x 中 JsonAsset 的文本内容在 json 属性中
-            try {
-                this.res = jsonAsset.json;
-            } catch (parseErr) {
-                callback(parseErr as Error);
-                return;
-            }
-            callback(null);
+    
+    // 加载数据表格 - Promise 风格
+    public async load(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            resources.load(this.getResUrl(), JsonAsset, (err, jsonAsset) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                // Cocos Creator 3.x 中 JsonAsset 的文本内容在 json 属性中
+                try {
+                    this.res = jsonAsset.json;
+                    resolve();
+                } catch (parseErr) {
+                    reject(parseErr);
+                }
+            });
         });
     }
+    
     // 卸载资源
     public unload() {
         resources.release(this.getResUrl(), JsonAsset);

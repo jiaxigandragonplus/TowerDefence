@@ -12,11 +12,12 @@ class ViewMain {
         launchStage.enter();
     }
     // 表现层退出
-    shut() {
+    async shut(): Promise<void> {
         log.info("view main shutdown.");
+        await uiMgr.shut();
     }
     //重启
-    restart(callback: AsyncCallback) {
+    async restart(callback: AsyncCallback): Promise<void> {
         uiMgr.restart();
         callback();
     }

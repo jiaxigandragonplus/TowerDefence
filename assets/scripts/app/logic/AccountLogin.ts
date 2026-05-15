@@ -33,9 +33,9 @@ export class AccountLogin extends UIBase {
     }
 
     // 关闭界面
-    onCloseClicked() {
+    async onCloseClicked() {
         log.info("close account login.");
-        this.hide();
+        await this.hide();
     }
 
     // 登录

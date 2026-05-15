@@ -7,19 +7,16 @@ const log = new Logger("logic-main");
 
 class LogicMain {
     // 初始化逻辑层
-    init() {
+    async init() {
         log.info("logic main initialized.");
 
-        // 显示loading界面
+        // 显示 loading 界面
         const SplashUI = new Splash();
-        SplashUI.show((error) => {
-            if (error) {
-                //reject(error);
-            }
-            else {
-                //resolve();
-            }
-        });
+        try {
+            await SplashUI.show();
+        } catch (error) {
+            log.error(`show splash error: ${error}`);
+        }
     }
 
     // 逻辑层退出

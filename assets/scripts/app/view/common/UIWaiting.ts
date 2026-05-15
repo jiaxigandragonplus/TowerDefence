@@ -15,20 +15,20 @@ class UIWaiting extends UIBase {
         return false;
     }
 
-    show(callback?: (error?: any) => void) {
+    async show(): Promise<void> {
         this.waitingCount++;
         this.hide();
         this.isHide = false;
-        super.show(callback);
+        await super.show();
     }
 
-    hide() {
+    async hide(): Promise<void> {
         this.waitingCount--;
         if (this.waitingCount > 0) return;
 
         this.isHide = true;
         if (this.isLoaded())
-            super.hide();
+            await super.hide();
     }
 
     onShow() {
@@ -50,7 +50,7 @@ class UIWaiting extends UIBase {
         return "prefab/cmn/Win_Waiting";
     }
 
-    protected doShow(callback?: (error?: any) => void) {
+    protected doShow() {
         if (this.ccNode == null) {
             this.ccNode = instantiate(this.prefab);
             const zIndex: UIZIndex = this.ccNode.getComponent(UIZIndex);
@@ -66,7 +66,6 @@ class UIWaiting extends UIBase {
         uiMgr.openUI(this);
         this.playOpenAnim();
         this.onShow();
-        callback && callback();
     }
 
     private waitingCount: number = 0; // 当不为 0 的时候应该不被关闭。

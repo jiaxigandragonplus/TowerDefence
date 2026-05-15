@@ -8,6 +8,12 @@ const log = new Logger("AudioMgr");
 type CallbackFunc = (error?: any) => void;
 type CheckPlayFunc = () => boolean;
 
+// 音频播放结果
+export interface AudioPlayResult {
+    id: number;
+    audioSource?: AudioSource;
+}
+
 //音频管理类，所有音频播放都需要通过 audioMgr 单例实现
 class AudioMgr {
     constructor() {
@@ -22,7 +28,23 @@ class AudioMgr {
         });
     }
 
-    //播放音乐
+    //播放音乐 - Promise 版本
+    async playBgAsync(filePath: string, i18n: boolean, checkPlayFunc?: CheckPlayFunc): Promise<AudioPlayResult> {
+        return new Promise((resolve, reject) => {
+            const id = this.playBg(filePath, i18n, checkPlayFunc, (error) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve({ id, audioSource: this.id2AudioSources[id] });
+                }
+            });
+            if (id == null) {
+                reject(new Error("Failed to play background music"));
+            }
+        });
+    }
+
+    //播放音乐 - 回调版本（保持向后兼容）
     playBg(filePath: string, i18n: boolean, checkPlayFunc?: CheckPlayFunc, callback?: CallbackFunc) {
         if (filePath == null || filePath.length <= 0 || filePath === this.bgMusicFilePath) {
             return;
@@ -38,7 +60,23 @@ class AudioMgr {
         this.stop(this.bgMusicID);
     }
 
-    //播放音效
+    //播放音效 - Promise 版本
+    async playFxAsync(filePath: string, i18n: boolean, checkPlayFunc?: CheckPlayFunc): Promise<AudioPlayResult> {
+        return new Promise((resolve, reject) => {
+            const id = this.playFx(filePath, i18n, checkPlayFunc, (error) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve({ id, audioSource: this.id2AudioSources[id] });
+                }
+            });
+            if (id == null) {
+                reject(new Error("Failed to play sound effect"));
+            }
+        });
+    }
+
+    //播放音效 - 回调版本（保持向后兼容）
     playFx(filePath: string, i18n: boolean, checkPlayFunc?: CheckPlayFunc, callback?: CallbackFunc): number {
         if (filePath == null || filePath.length <= 0) {
             return;
@@ -53,7 +91,23 @@ class AudioMgr {
         return this.play(filePath, i18n, checkPlayFunc, callback, AudioType.Fx);
     }
 
-    //播放音频
+    //播放音频 - Promise 版本
+    async playAsync(filePath: string, i18n: boolean, checkPlayFunc: CheckPlayFunc, asType: AudioType): Promise<AudioPlayResult> {
+        return new Promise((resolve, reject) => {
+            const id = this.play(filePath, i18n, checkPlayFunc, (error) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve({ id, audioSource: this.id2AudioSources[id] });
+                }
+            }, asType);
+            if (id == null) {
+                reject(new Error("Failed to play audio"));
+            }
+        });
+    }
+
+    //播放音频 - 回调版本（保持向后兼容）
     play(filePath: string, i18n: boolean, checkPlayFunc: CheckPlayFunc, callback: CallbackFunc, asType: AudioType): number {
         if (!filePath || filePath.length <= 0 || this.isMute[asType]) {
             return;
@@ -64,12 +118,7 @@ class AudioMgr {
         this.id2LoadedURL[id] = url;
         this.id2Status[id] = AudioStatus.Loading;
         this.addRefCnt(url);
-        this.load(url, (error, audioSource: AudioSource) => {
-            if (error) {
-                this.stop(id);
-                log.error(`play audio ${url} error: ${error}`);
-                return callback && callback(error);
-            }
+        this.load(url).then((audioSource) => {
             //检查是否还需要播放
             if (checkPlayFunc && !checkPlayFunc()) {
                 this.stop(id);
@@ -89,6 +138,10 @@ class AudioMgr {
             this.setEaseIn(id, audioSource);
             this.setStopTimeout(id, audioSource);
             callback && callback();
+        }).catch((error) => {
+            this.stop(id);
+            log.error(`play audio ${url} error: ${error}`);
+            return callback && callback(error);
         });
         return id;
     }
@@ -195,14 +248,18 @@ class AudioMgr {
         ++this.urlRefCnt[url];
     }
 
-    private load(url: string, callback?: (error, audioSource) => void) {
-        resources.load(url, Prefab, (err, prefab) => {
-            if (err) {
-                return callback(err, null);
-            }
-            const ccNode: Node = instantiate(prefab);
-            const audioSource = ccNode.getComponent(AudioSource);
-            callback(null, audioSource);
+    // 加载音频 - Promise 版本
+    private async load(url: string): Promise<AudioSource> {
+        return new Promise((resolve, reject) => {
+            resources.load(url, Prefab, (err, prefab) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                const ccNode: Node = instantiate(prefab);
+                const audioSource = ccNode.getComponent(AudioSource);
+                resolve(audioSource);
+            });
         });
     }
 

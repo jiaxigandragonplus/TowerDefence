@@ -161,12 +161,12 @@ type PowerUpTextData = {
 }
 
 abstract class UINotice extends UIBase {
-    showNotice(textData: any, iconFilePath?: string, alwaysShowIcon?: boolean, fontColor?: boolean) {
+    async showNotice(textData: any, iconFilePath?: string, alwaysShowIcon?: boolean, fontColor?: boolean): Promise<void> {
         this.textData = textData;
         this.iconFilePath = iconFilePath;
         this.alwaysShowIcon = !!alwaysShowIcon;
         this.fontColor = fontColor;
-        this.show();
+        await this.show();
     }
 
     onFinished(cb: FinishedCb) {
@@ -235,8 +235,8 @@ abstract class UINotice extends UIBase {
 }
 
 class UINoticeSmall extends UINotice {
-    showNotice(text: string, iconFilePath?: string, alwaysShowIcon?: boolean, fontColor?: boolean) {
-        super.showNotice(text, iconFilePath, alwaysShowIcon, fontColor);
+    async showNotice(text: string, iconFilePath?: string, alwaysShowIcon?: boolean, fontColor?: boolean): Promise<void> {
+        await super.showNotice(text, iconFilePath, alwaysShowIcon, fontColor);
     }
 
     getUrl(): string {
@@ -249,8 +249,8 @@ class UINoticeSmall extends UINotice {
 }
 
 class UINoticeLarge extends UINotice {
-    showNotice(text: string, iconFilePath?: string, alwaysShowIcon?: boolean, fontColor?: boolean) {
-        super.showNotice(text, iconFilePath, alwaysShowIcon, fontColor);
+    async showNotice(text: string, iconFilePath?: string, alwaysShowIcon?: boolean, fontColor?: boolean): Promise<void> {
+        await super.showNotice(text, iconFilePath, alwaysShowIcon, fontColor);
     }
 
     getUrl(): string {
@@ -263,8 +263,8 @@ class UINoticeLarge extends UINotice {
 }
 
 class UINoticePowerUp extends UINotice {
-    showNotice(text: PowerUpTextData, iconFilePath?: string, alwaysShowIcon?: boolean, fontColor?: boolean) {
-        super.showNotice(text, iconFilePath, alwaysShowIcon, fontColor);
+    async showNotice(text: PowerUpTextData, iconFilePath?: string, alwaysShowIcon?: boolean, fontColor?: boolean): Promise<void> {
+        await super.showNotice(text, iconFilePath, alwaysShowIcon, fontColor);
     }
 
     getUrl(): string {

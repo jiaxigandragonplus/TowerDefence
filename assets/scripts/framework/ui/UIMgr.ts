@@ -15,9 +15,9 @@ class UIMgr {
         return true;
     }
 
-    shut() {
+    async shut(): Promise<void> {
         while (this.uiList.length > 0) {
-            this.uiList[0].release();
+            await this.uiList[0].release();
         }
     }
 

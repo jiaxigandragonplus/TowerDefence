@@ -4,13 +4,13 @@ import { UIBase } from "../../../framework/ui/UIBase";
 import { Vec2, Vec3, Node, Prefab, UITransform } from "cc";
 
 class UIShowPrefabMgr {
-    showPrefabByUrl(prefabURL: string,
+    async showPrefabByUrl(prefabURL: string,
         worldPos?: Vec2,
         onShow?: (ccNode: Node) => void,
         onHide?: () => void,
         onRelease?: () => void,
-        onLoading?: (cb: (err?: Error) => void) => void
-    ): UIBase {
+        onLoading?: () => Promise<void>
+    ): Promise<UIBase> {
         const pool = this.getPool(prefabURL);
         const uiShowPrefab = pool.get();
         uiShowPrefab.setPrefabURL(prefabURL, worldPos);
@@ -23,18 +23,18 @@ class UIShowPrefabMgr {
                 onRelease && onRelease();
                 pool.put(uiShowPrefab);
             }, onLoading);
-        uiShowPrefab.show();
+        await uiShowPrefab.show();
         return uiShowPrefab;
     }
 
-    showPrefabByRef(
+    async showPrefabByRef(
         prefabRef: Prefab,
         worldPos?: Vec2,
         onShow?: (ccNode: Node) => void,
         onHide?: () => void,
         onRelease?: () => void,
-        onLoading?: (cb: (err?: Error) => void) => void
-    ): UIBase {
+        onLoading?: () => Promise<void>
+    ): Promise<UIBase> {
         const pool = this.getPool(prefabRef.name);
         const uiShowPrefab = pool.get();
         uiShowPrefab.setPrefabRef(prefabRef, worldPos);
@@ -46,7 +46,7 @@ class UIShowPrefabMgr {
                 onRelease && onRelease();
                 pool.put(uiShowPrefab);
             }, onLoading);
-        uiShowPrefab.show();
+        await uiShowPrefab.show();
         return uiShowPrefab;
     }
 
@@ -84,7 +84,7 @@ class UIShowPrefab extends UIBaseShowWaiting {
     setCB(onShow?: (ccNode: Node) => void,
         onHide?: () => void,
         onRelease?: () => void,
-        onLoading?: (cb: (err?: Error) => void) => void
+        onLoading?: () => Promise<void>
     ) {
         this.onShowCB = onShow;
         this.onHideCB = onHide;
@@ -92,11 +92,10 @@ class UIShowPrefab extends UIBaseShowWaiting {
         this.onLoadingCB = onLoading;
     }
 
-    onLoading(cb: (err?: Error) => void) {
+    protected async onLoading(): Promise<void> {
         if (this.onLoadingCB) {
-            return this.onLoadingCB(cb);
+            await this.onLoadingCB();
         }
-        cb();
     }
 
     onShow() {
@@ -153,7 +152,7 @@ class UIShowPrefab extends UIBaseShowWaiting {
     private onShowCB: (ccNode: Node) => void;
     private onHideCB: () => void;
     private onReleaseCB: () => void;
-    private onLoadingCB: (cb: (err?: Error) => void) => void;
+    private onLoadingCB: () => Promise<void>;
 }
 
 export const uiShowPrefabMgr = new UIShowPrefabMgr();

@@ -42,11 +42,14 @@ export class Splash extends UIBase {
             .start();
     }
 
-    showLoginUI() {
+    async showLoginUI() {
         const LoginUI = new Login();
-        LoginUI.show((error) => {
+        try {
+            await LoginUI.show();
             log.info('login ui show');
-        });
+        } catch (error) {
+            log.error(`show login ui error: ${error}`);
+        }
     }
 
     onHide() {

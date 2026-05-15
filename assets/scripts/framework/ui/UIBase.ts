@@ -8,36 +8,27 @@ const log = new Logger("ui-base");
 // 所有 UI 的基类
 export abstract class UIBase {
     // 显示当前界面，如果未加载则先加载
-    show(callback?: (error?: any) => void) {
+    async show(): Promise<void> {
         uiMgr.addToUIInMemory(this);
         if (!this.isLoaded()) {
-            this.load((error) => {
-                if (error) {
-                    log.error(`loading ui ${this.getUrl()} error, ${error}`);
-                    callback && callback(error);
-                    return;
-                }
-                this.doShow(callback);
-            });
-            return;
+            await this.load();
         }
-        this.doShow(callback);
+        this.doShow();
     }
 
     // 隐藏当前界面
-    hide() {
+    async hide(): Promise<void> {
         if (!this.ccNode.activeInHierarchy) {
             return;
         }
-        this.playCloseAnim(() => {
-            this.onHide();
-            uiMgr.closeUI(this);
-            this.onHideOver();
-        });
+        await this.playCloseAnim();
+        this.onHide();
+        uiMgr.closeUI(this);
+        this.onHideOver();
     }
 
     // 释放当前界面，会清理内存
-    release() {
+    async release(): Promise<void> {
         const doRelease = () => {
             this.onRelease();
             uiMgr.closeUI(this);
@@ -53,9 +44,8 @@ export abstract class UIBase {
             uiMgr.delFromUIInMemory(this);
         };
         if (this.ccNode.activeInHierarchy) {
-            this.playCloseAnim(() => {
-                doRelease();
-            });
+            await this.playCloseAnim();
+            doRelease();
         }
         else {
             doRelease();
@@ -109,35 +99,36 @@ export abstract class UIBase {
         return true;
     }
 
-    // 正在加载界面的回调，仅当 callback 被调用才会真正结束加载，
-    // 这个方法为子类提供与界面加载时并行执行异步担任的可能
-    onLoading(callback: (err?: Error) => void) {
-        callback();
+    // 正在加载界面的回调，仅当 Promise resolve 才会真正结束加载，
+    // 这个方法为子类提供与界面加载时并行执行异步任务的可能
+    protected async onLoading(): Promise<void> {
+        // 默认空实现，子类可重写
     }
 
-    preload(callback: (error: any) => void, progressCallback?: (completedCount: number, totalCount: number, item: any) => void) {
-        const self = this;
-        // Cocos Creator 3.x 中使用 resources.load 替代 cc.loader.loadRes
-        resources.load(self.getUrl(), Prefab, progressCallback, (err) => {
-            if (err) {
-                callback(err);
-                return;
-            }
-            self.onLoading(callback);
+    // 预加载界面资源
+    async preload(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            resources.load(this.getUrl(), Prefab, (err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                this.onLoading().then(resolve).catch(reject);
+            });
         });
     }
 
     // 加载相应 prefab 资源
-    protected load(callback: (error: any) => void) {
-        const self = this;
-        // Cocos Creator 3.x 中使用 resources.load 替代 cc.loader.loadRes
-        resources.load(self.getUrl(), Prefab, (err, prefab) => {
-            if (err) {
-                callback(err);
-                return;
-            }
-            self.prefab = prefab;
-            self.onLoading(callback);
+    protected async load(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            resources.load(this.getUrl(), Prefab, (err, prefab) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                this.prefab = prefab;
+                this.onLoading().then(resolve).catch(reject);
+            });
         });
     }
 
@@ -160,7 +151,7 @@ export abstract class UIBase {
     abstract onRelease();
     onRestart() { }
 
-    protected doShow(callback?: (error?: any) => void) {
+    protected doShow() {
         if (this.ccNode == null) {
             this.ccNode = instantiate(this.prefab);
             const zIndex: UIZIndex = this.ccNode.getComponent(UIZIndex);
@@ -174,7 +165,6 @@ export abstract class UIBase {
         uiMgr.openUI(this);
         this.playOpenAnim();
         this.onShow();
-        callback && callback();
     }
 
     // 播放打开动画，优先播放名为"ui-open"的动画，如果没有则尝试将动画数组下标为 0 的动画当作界面打开动画
@@ -196,30 +186,33 @@ export abstract class UIBase {
     }
 
     // 播放关闭动画，优先播放名为"ui-close"的动画，如果没有则将动画数组中下标为 1 的动画当作界面关闭动画
-    protected playCloseAnim(cb: () => void) {
-        const animComp: Animation = this.ccNode.getComponent(Animation);
-        if (!animComp) {
-            return cb();
-        }
-        // 尝试播放 ui-close 动画
-        const clip = animComp.clips.find(c => c.name === "ui-close");
-        if (clip) {
-            animComp.play("ui-close");
-            animComp.scheduleOnce(() => {
-                cb();
-            }, clip.duration);
-        } else {
-            // 如果没有 ui-close 动画，使用默认动画
-            const defaultClip = animComp.defaultClip;
-            if (defaultClip) {
-                animComp.play();
-                animComp.scheduleOnce(() => {
-                    cb();
-                }, defaultClip.duration);
-            } else {
-                cb();
+    protected playCloseAnim(): Promise<void> {
+        return new Promise((resolve) => {
+            const animComp: Animation = this.ccNode.getComponent(Animation);
+            if (!animComp) {
+                resolve();
+                return;
             }
-        }
+            // 尝试播放 ui-close 动画
+            const clip = animComp.clips.find(c => c.name === "ui-close");
+            if (clip) {
+                animComp.play("ui-close");
+                animComp.scheduleOnce(() => {
+                    resolve();
+                }, clip.duration);
+            } else {
+                // 如果没有 ui-close 动画，使用默认动画
+                const defaultClip = animComp.defaultClip;
+                if (defaultClip) {
+                    animComp.play();
+                    animComp.scheduleOnce(() => {
+                        resolve();
+                    }, defaultClip.duration);
+                } else {
+                    resolve();
+                }
+            }
+        });
     }
 
     protected prefab: Prefab;

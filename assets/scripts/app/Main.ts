@@ -29,17 +29,17 @@ export default class Main extends Component {
         LangSetting.init();
     }
 
-    start() {
+    async start() {
         uiMgr.init(this.uiRoot);
         viewMain.init();
-        logicMain.init();
+        await logicMain.init();
     }
 
     bindOnClose(): void {
         if (window != null && typeof window.addEventListener == "function") {
-            window.addEventListener("beforeunload", function () {
+            window.addEventListener("beforeunload", async function () {
                 log.info("on game close.");
-                viewMain.shut();
+                await viewMain.shut();
                 logicMain.shut();
             });
         }
