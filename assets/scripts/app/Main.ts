@@ -23,7 +23,7 @@ export default class Main extends Component {
 
     onLoad() {
         Main.instance = this;
-        this.initDebugConsole();
+        // this.initDebugConsole();
         this.bindOnClose();
         this.bindOnRestart();
         LangSetting.init();
