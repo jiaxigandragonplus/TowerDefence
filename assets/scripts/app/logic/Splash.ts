@@ -2,6 +2,7 @@ import { Logger } from "../../framework/logger/Logger";
 import { SplashUIPrefab } from "../prefab_script/SplashUIPrefab";
 import { UIBase } from "../../framework/ui/UIBase";
 import { Login } from "./Login";
+import { MainScene } from "./MainScene";
 import { tween, Vec3, UIOpacity } from "cc";
 
 const log = new Logger("test-coexist-ui");
@@ -30,7 +31,7 @@ export class Splash extends UIBase {
             .call(() => {
                 console.log('splash over');
                 // 显示登录界面
-                this.showLoginUI();
+                this.showMainSceneUI();
                 // 关闭闪屏
                 this.hide();
             })
@@ -49,6 +50,16 @@ export class Splash extends UIBase {
             log.info('login ui show');
         } catch (error) {
             log.error(`show login ui error: ${error}`);
+        }
+    }
+
+    async showMainSceneUI() {
+        const MainSceneUI = new MainScene();
+        try {
+            await MainSceneUI.show();
+            log.info('main scene ui show');
+        } catch (error) {
+            log.error(`show main scene ui error: ${error}`);
         }
     }
 
