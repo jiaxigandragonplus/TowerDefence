@@ -2,8 +2,8 @@ import { _decorator, Component, Node, Button } from "cc";
 const { ccclass, menu, property } = _decorator;
 
 @ccclass
-@menu("prefab/BookmaarkItemPrefab")
-export class BookmaarkItemPrefab extends Component {
+@menu("prefab/BookmarkItemPrefab")
+export class BookmarkItemPrefab extends Component {
 
     @property(Node)
     bookmarkArray: Node[] = [];
