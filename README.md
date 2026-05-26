@@ -1,1 +1,10 @@
 这是一个cocos creator开发的塔防游戏
+
+这是一个复刻保卫萝卜的塔防游戏
+battle目录下是主要的关卡逻辑
+barrier表示障碍物，基类为BarrierBase
+monster表示怪物，基类为MonsterBase
+tower表示炮塔，基类为TowerBase
+bullet表示子弹，基类为BulletBase
+BarrierBase，MonsterBase，TowerBase，BulletBase都继承自Entity
+请先从Entity开始，实现几个基本地图对象的功能
