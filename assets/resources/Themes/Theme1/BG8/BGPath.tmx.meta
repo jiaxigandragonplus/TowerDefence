@@ -1,9 +1,10 @@
 {
   "ver": "1.0.2",
   "importer": "tiled-map",
-  "imported": false,
+  "imported": true,
   "uuid": "7e35b3fb-4786-4ad3-9823-842599c3ad2d",
   "files": [
+    ".json",
     ".tmx"
   ],
   "subMetas": {},
